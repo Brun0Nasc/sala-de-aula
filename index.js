@@ -21,8 +21,8 @@ app.get('/', (req, res) => {
     res.send('API Funcionando!');
 });
 
-app.use('/api/auth', authRouter);
-app.use('/api/labs', labRouter);
+app.use('/', authRouter);
+app.use('/laboratorio', labRouter);
 
 app.listen(port, () => {
     console.log(`Servidor está rodando na porta ${port}`);
