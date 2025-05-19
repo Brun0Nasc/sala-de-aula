@@ -8,10 +8,11 @@ const connectDB = require('./config/database');
 const authRouter = require('./routes/auth');
 const labRouter = require('./routes/labRoutes');
 
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+    connectDB();
+}
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(diaDaSemanaApenas);
 app.use(cors());
@@ -24,6 +25,11 @@ app.get('/', (req, res) => {
 app.use('/', authRouter);
 app.use('/laboratorio', labRouter);
 
-app.listen(port, () => {
-    console.log(`Servidor está rodando na porta ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Servidor está rodando na porta ${port}`);
+    });
+}
+
+module.exports = app;
