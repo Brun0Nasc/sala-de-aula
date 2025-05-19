@@ -28,7 +28,7 @@ describe('Lab API - /laboratorio', () => {
     it('should create a new lab if authenticated', async () => {
       const res = await request(app)
         .post('/laboratorio')
-        .set('Authorization', `Bearer ${token}`) // Envia o token no cabeçalho
+        .set('Authorization', `Bearer ${token}`)
         .send(validLabData);
 
       expect(res.statusCode).toEqual(201);
@@ -42,19 +42,15 @@ describe('Lab API - /laboratorio', () => {
     it('should return 401 if not authenticated', async () => {
       const res = await request(app)
         .post('/laboratorio')
-        .send(validLabData); // Sem token
+        .send(validLabData);
 
       expect(res.statusCode).toEqual(401);
       expect(res.body.error).toEqual('Não autorizado. Token não encontrado.');
     });
-
-    // Adicione mais testes (campos obrigatórios faltando, etc.)
   });
 
-  // Adicione testes para GET /laboratorio, GET /laboratorio/relatorio, etc.
   describe('GET /relatorio - Get Lab Report PDF (Protected Route)', () => {
     it('should return a PDF report if authenticated', async () => {
-        // Primeiro, crie alguns laboratórios para que o relatório tenha conteúdo
         await request(app)
             .post('/laboratorio')
             .set('Authorization', `Bearer ${token}`)
@@ -70,16 +66,14 @@ describe('Lab API - /laboratorio', () => {
 
         expect(res.statusCode).toEqual(200);
         expect(res.headers['content-type']).toEqual('application/pdf');
-        expect(res.headers['content-disposition']).toMatch(/^attachment; filename="Relatorio_Laboratorios_/); // Verifica o início do nome do arquivo
-        // Você pode adicionar verificações mais robustas para o conteúdo do PDF se necessário,
-        // mas isso pode ser complexo. Verificar o tipo de conteúdo e o status é um bom começo.
-        expect(res.body).toBeInstanceOf(Buffer); // O corpo será um Buffer de dados PDF
-        expect(res.body.length).toBeGreaterThan(100); // Um PDF válido terá algum tamanho
+        expect(res.headers['content-disposition']).toMatch(/^attachment; filename="Relatorio_Laboratorios_/);
+        expect(res.body).toBeInstanceOf(Buffer);
+        expect(res.body.length).toBeGreaterThan(100);
     });
 
     it('should return 401 if not authenticated when requesting report', async () => {
         const res = await request(app)
-            .get('/laboratorio/relatorio'); // Sem token
+            .get('/laboratorio/relatorio');
 
         expect(res.statusCode).toEqual(401);
     });
