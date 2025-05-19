@@ -27,7 +27,7 @@ describe('Lab API - /laboratorio', () => {
 
     it('should create a new lab if authenticated', async () => {
       const res = await request(app)
-        .post('/laboratorio')
+        .post('/laboratorio/novo')
         .set('Authorization', `Bearer ${token}`)
         .send(validLabData);
 
@@ -41,7 +41,7 @@ describe('Lab API - /laboratorio', () => {
 
     it('should return 401 if not authenticated', async () => {
       const res = await request(app)
-        .post('/laboratorio')
+        .post('/laboratorio/novo')
         .send(validLabData);
 
       expect(res.statusCode).toEqual(401);
@@ -52,11 +52,11 @@ describe('Lab API - /laboratorio', () => {
   describe('GET /relatorio - Get Lab Report PDF (Protected Route)', () => {
     it('should return a PDF report if authenticated', async () => {
         await request(app)
-            .post('/laboratorio')
+            .post('/laboratorio/novo')
             .set('Authorization', `Bearer ${token}`)
             .send({ nome: 'Lab Alpha', descricao: 'Desc A', capacidade: 10 });
         await request(app)
-            .post('/laboratorio')
+            .post('/laboratorio/novo')
             .set('Authorization', `Bearer ${token}`)
             .send({ nome: 'Lab Beta', descricao: 'Desc B', capacidade: 15 });
 
